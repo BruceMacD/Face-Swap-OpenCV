@@ -7,6 +7,7 @@ import sys
 import getopt
 import cv2
 from constants.constants import debug
+from components.landmark_detection import detect_landmarks
 
 EXPECTED_NUM_IN = 2
 DEBUG = True
@@ -44,6 +45,9 @@ def main(argv):
 
     img1 = cv2.imread(in_imgs[0])
     img2 = cv2.imread(in_imgs[1])
+
+    detect_landmarks(img1)
+    detect_landmarks(img2)
 
     # TODO: Testing image display, should be removed
     # cv2.imshow('image', img1)
