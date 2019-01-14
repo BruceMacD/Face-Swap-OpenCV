@@ -39,7 +39,7 @@ def landmarks_to_numpy(landmarks):
     return coords
 
 
-def show_face_bb(faces, landmarks, img):
+def show_face_annotated(faces, landmarks, img):
     boxes_landmarks = zip(faces, landmarks)
 
     for face, landmark in boxes_landmarks:
@@ -72,6 +72,6 @@ def detect_landmarks(img):
 
     # show the bounding box
     if debug:
-        show_face_bb(detected_faces, facial_landmarks, img)
+        show_face_annotated(detected_faces, facial_landmarks, img)
 
     return facial_landmarks
