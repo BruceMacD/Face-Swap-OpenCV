@@ -7,6 +7,7 @@ Ex: ./faceSwap.py -i data/headshot1.jpg -i data/headshot2.jpg -o data/swapped.jp
 
 ## Requirements
 * OpenCV v3.0+
+* dlib
 * Python 3
 
 ## Sample
