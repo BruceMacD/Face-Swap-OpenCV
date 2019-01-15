@@ -46,15 +46,10 @@ def main(argv):
     img1 = cv2.imread(in_imgs[0])
     img2 = cv2.imread(in_imgs[1])
 
-    detect_landmarks(img1)
-    detect_landmarks(img2)
-
-    # TODO: Testing image display, should be removed
-    # cv2.imshow('image', img1)
-    # cv2.waitKey()
-    # cv2.destroyAllWindows()
-
-    # Find the facial landmarks which return points on the face
+    # find the facial landmarks which return the key points of the face
+    # localizes and labels areas such as eyebrows and nose
+    landmarks1 = detect_landmarks(img1)
+    landmarks2 = detect_landmarks(img2)
 
     # TODO: convex hull from points
     # find_convex_hull(in_imgs[0])

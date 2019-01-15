@@ -40,38 +40,38 @@ def landmarks_to_numpy(landmarks):
 
 
 def show_face_annotated(faces, landmarks, img):
-    boxes_landmarks = zip(faces, landmarks)
+    # boxes_landmarks = zip(faces, landmarks)
 
-    for face, landmark in boxes_landmarks:
+    for face in faces:
         # draw box for face
         x, y, w, h = dlib_to_cv_bounding_box(face)
         cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 2)
 
         # draw circles for landmarks
-        points = landmarks_to_numpy(landmark)
-        for x, y in points:
+        for x, y in landmarks:
             cv2.circle(img, (x, y), 1, (0, 0, 255), -1)
 
         # show the output image with the face detections + facial landmarks
         cv2.imshow("Output", img)
         cv2.waitKey(0)
+        cv2.destroyAllWindows()
 
 
 def detect_landmarks(img):
-    facial_landmarks = []
-
+    points = []
     # second argument of 1 indicates the image will be upscaled once
     # returns a bounding box around each face
     detected_faces = frontal_face_detector(img, 1)
 
     # now that we have the boxes containing the faces find the landmarks inside them
     for face in detected_faces:
+        # we are assuming that we will only find one face here
+        # in any case, we can only swap one face for our use so we will be taking the last one found
         landmarks = landmarks_predictor(img, face)
-        facial_landmarks.append(landmarks)
-        # TODO: convert to numpy array here before returning?
+        points = landmarks_to_numpy(landmarks)
 
     # show the bounding box
     if debug:
-        show_face_annotated(detected_faces, facial_landmarks, img)
+        show_face_annotated(detected_faces, points, img)
 
-    return facial_landmarks
+    return points
