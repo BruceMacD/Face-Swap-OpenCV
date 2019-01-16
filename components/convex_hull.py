@@ -8,50 +8,43 @@ Keeping simple for clarity
 
 import numpy as np
 import cv2
+from constants.constants import debug_convex_hull
 
 
-"""
-TODO: explanation
-"""
-def find_points(img_path):
-    img_file = img_path + '.txt'
-    points = []
+def show_convex_hull(hull, img):
+    color = (255, 255, 255)  # color for convex hull
+    height, width, channels = img.shape
+    drawing = np.zeros((width, height, 3), np.uint8)
+    # convert the hull to Numpy array of (x,y) points for display
+    hull_contour = np.array(hull).reshape((-1, 1, 2)).astype(np.int32)
 
-    with open(img_file) as points_file:
-        for line in points_file:
-            x, y = line.split()
-            points.append((int(x), int(y)))
+    # for i in range(len(hull)):
+    #     cv2.drawContours(img, hull_contour, i, color, 2, 8)
 
-    return points
-
-
-def show_convex_hull(hull, points, img_path):
-    img = cv2.imread(img_path)
-    # create an empty black image
-    drawing = np.zeros((img.shape[0], img.shape[1], 3), np.uint8)
-
-    # draw points and hull
-    for i in range(len(img)):
-        color_points = (0, 255, 0)
-        color_hull = (255, 255, 255)
-        # cv2.drawKeypoints()
-        cv2.drawContours(drawing, points, i, color_points, 2, 8)
-        cv2.drawContours(drawing, hull, i, color_hull, 2, 8)
+    # draw points within the hull
+    for x, y in hull:
+        cv2.circle(drawing, (x, y), 1, (0, 0, 255), -1)
 
     cv2.imshow("Output", drawing)
-
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
 
-def find_convex_hull(img_path):
-    hull = []
-    points = find_points(img_path)
-    hull_index = cv2.convexHull(np.array(points), returnPoints=False)
+def find_convex_hull(points_1, points_2, img_1, img_2):
+    hull_1 = []
+    hull_2 = []
 
-    for i in range(0, len(hull_index)):
-        hull.append(points[int(hull_index[i])])
+    # this is the area that we will be mapping between faces
+    hull_index_to_map = cv2.convexHull(np.array(points_1), returnPoints=False)
+
+    # find the facial landmark points on both faces that are within the hull of the face we are basing our map off of
+    for i in range(0, len(hull_index_to_map)):
+        hull_1.append(points_1[int(hull_index_to_map[i])])
+        hull_2.append(points_2[int(hull_index_to_map[i])])
 
     # display for debugging
-    # TODO: move/remove
-    show_convex_hull(hull, points, img_path)
+    if debug_convex_hull:
+        show_convex_hull(hull_1, img_1)
+        show_convex_hull(hull_2, img_2)
+
+    return hull_1, hull_2

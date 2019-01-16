@@ -5,7 +5,7 @@ Using the provided functions in dlib to detect the points of facial landmarks in
 import numpy as np
 import cv2
 import dlib
-from constants.constants import debug
+from constants.constants import debug_landmark_detection
 
 # Pre-trained shape predictor from iBUG 300-W dataset
 SHAPE_PREDICTOR = 'data/shape_predictor_68_face_landmarks.dat'
@@ -71,7 +71,7 @@ def detect_landmarks(img):
         points = landmarks_to_numpy(landmarks)
 
     # show the bounding box
-    if debug:
+    if debug_landmark_detection:
         show_face_annotated(detected_faces, points, img)
 
     return points

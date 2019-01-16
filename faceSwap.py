@@ -6,8 +6,8 @@ Run all the separate components of face swapping in an easily understandable hig
 import sys
 import getopt
 import cv2
-from constants.constants import debug
 from components.landmark_detection import detect_landmarks
+from components.convex_hull import find_convex_hull
 
 EXPECTED_NUM_IN = 2
 DEBUG = True
@@ -43,16 +43,17 @@ def main(argv):
     print('Input files', in_imgs)
     print('Output file is', out_dir)
 
-    img1 = cv2.imread(in_imgs[0])
-    img2 = cv2.imread(in_imgs[1])
+    img_1 = cv2.imread(in_imgs[0])
+    img_2 = cv2.imread(in_imgs[1])
 
     # find the facial landmarks which return the key points of the face
     # localizes and labels areas such as eyebrows and nose
-    landmarks1 = detect_landmarks(img1)
-    landmarks2 = detect_landmarks(img2)
+    landmarks_1 = detect_landmarks(img_1)
+    landmarks_2 = detect_landmarks(img_2)
 
-    # TODO: convex hull from points
-    # find_convex_hull(in_imgs[0])
+    # create a convex hull around the points, this will be used for transferring the points
+    # to another face
+    hull_1, hull_2 = find_convex_hull(landmarks_1, landmarks_2, img_1, img_2)
 
 
 if __name__ == "__main__":
