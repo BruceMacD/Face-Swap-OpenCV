@@ -12,20 +12,11 @@ from constants.constants import debug_convex_hull
 
 
 def show_convex_hull(hull, img):
-    color = (255, 255, 255)  # color for convex hull
-    height, width, channels = img.shape
-    drawing = np.zeros((width, height, 3), np.uint8)
-    # convert the hull to Numpy array of (x,y) points for display
-    hull_contour = np.array(hull).reshape((-1, 1, 2)).astype(np.int32)
-
-    # for i in range(len(hull)):
-    #     cv2.drawContours(img, hull_contour, i, color, 2, 8)
-
     # draw points within the hull
     for x, y in hull:
-        cv2.circle(drawing, (x, y), 1, (0, 0, 255), -1)
+        cv2.circle(img, (x, y), 1, (0, 0, 255), -1)
 
-    cv2.imshow("Output", drawing)
+    cv2.imshow("Output", img)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
