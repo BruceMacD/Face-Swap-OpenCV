@@ -56,9 +56,8 @@ def main(argv):
     # to another face
     hull_1, hull_2 = find_convex_hull(landmarks_1, landmarks_2, img_1, img_2)
 
-    # TODO: only need one of these for mapping
-    find_delauney_triangulation(img_1, landmarks_1)
-    find_delauney_triangulation(img_2, landmarks_2)
+    delauney1 = find_delauney_triangulation(img_1, landmarks_1)
+    delauney2 = find_delauney_triangulation(img_2, landmarks_2)
 
 
 if __name__ == "__main__":
