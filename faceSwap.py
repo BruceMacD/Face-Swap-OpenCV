@@ -9,6 +9,7 @@ import cv2
 from components.landmark_detection import detect_landmarks
 from components.convex_hull import find_convex_hull
 from components.delaunay_triangulation import find_delauney_triangulation
+from components.affine_transformation import apply_affine_transformation
 
 EXPECTED_NUM_IN = 2
 DEBUG = True
@@ -56,8 +57,12 @@ def main(argv):
     # to another face
     hull_1, hull_2 = find_convex_hull(landmarks_1, landmarks_2, img_1, img_2)
 
-    delauney1 = find_delauney_triangulation(img_1, landmarks_1)
-    delauney2 = find_delauney_triangulation(img_2, landmarks_2)
+    # divide the boundary of the face into smaller sections
+    delauney_1 = find_delauney_triangulation(img_1, hull_1)
+    # delauney_2 = find_delauney_triangulation(img_2, hull_2)
+
+    # warp the source triangles onto the target face
+    apply_affine_transformation(delauney_1, hull_1, hull_2)
 
 
 if __name__ == "__main__":
