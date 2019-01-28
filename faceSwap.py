@@ -62,7 +62,7 @@ def main(argv):
     # delauney_2 = find_delauney_triangulation(img_2, hull_2)
 
     # warp the source triangles onto the target face
-    apply_affine_transformation(delauney_1, hull_1, hull_2)
+    apply_affine_transformation(delauney_1, hull_1, hull_2, img_1, img_2)
 
 
 if __name__ == "__main__":
