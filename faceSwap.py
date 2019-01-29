@@ -6,10 +6,12 @@ Run all the separate components of face swapping in an easily understandable hig
 import sys
 import getopt
 import cv2
+import numpy as np
 from components.landmark_detection import detect_landmarks
 from components.convex_hull import find_convex_hull
 from components.delaunay_triangulation import find_delauney_triangulation
 from components.affine_transformation import apply_affine_transformation
+from components.clone_mask import swap_mask
 
 EXPECTED_NUM_IN = 2
 DEBUG = True
@@ -62,7 +64,10 @@ def main(argv):
     # delauney_2 = find_delauney_triangulation(img_2, hull_2)
 
     # warp the source triangles onto the target face
-    apply_affine_transformation(delauney_1, hull_1, hull_2, img_1, img_2)
+    # TODO: is this actually what is warped?
+    img_1_warped = apply_affine_transformation(delauney_1, hull_1, hull_2, img_1, img_2)
+
+    swap_mask(hull_1, img_1_warped, img_2)
 
 
 if __name__ == "__main__":
