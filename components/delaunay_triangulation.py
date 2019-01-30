@@ -64,10 +64,11 @@ def find_delauney_triangulation(img, points):
             # we use these indices later to get the corresponding points from another hull/landmarks
             if len(point_indices) == 3:
                 delauney_triangulation.append((point_indices[0], point_indices[1], point_indices[2]))
-                # draw the triangle on the picture for the case we want to display it
-                cv2.line(img, a, b, line_color, 1, cv2.LINE_AA, 0)
-                cv2.line(img, b, c, line_color, 1, cv2.LINE_AA, 0)
-                cv2.line(img, c, a, line_color, 1, cv2.LINE_AA, 0)
+                if debug_delauney_triangulation:
+                    # draw the triangle on the picture for the case we want to display it
+                    cv2.line(img, a, b, line_color, 1, cv2.LINE_AA, 0)
+                    cv2.line(img, b, c, line_color, 1, cv2.LINE_AA, 0)
+                    cv2.line(img, c, a, line_color, 1, cv2.LINE_AA, 0)
 
     if debug_delauney_triangulation:
         cv2.imshow("Delauney Triangulation", img)

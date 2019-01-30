@@ -66,6 +66,7 @@ def main(argv):
     # warp the source triangles onto the target face
     # TODO: is this actually what is warped?
     img_1_warped = apply_affine_transformation(delauney_1, hull_1, hull_2, img_1, img_2)
+    # img_2_warped = apply_affine_transformation(delauney_1, hull_2, hull_1, img_2, img_1)
 
     swap_mask(hull_1, img_1_warped, img_2)
 
