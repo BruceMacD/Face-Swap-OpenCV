@@ -1,5 +1,5 @@
 # Face-Swap-OpenCV - Work In Progress
-![delauney triangulation](https://github.com/BruceMacD/Face-Swap-OpenCV/blob/master/images/delauney_landmarks.png)
+![face swap sample](https://raw.githubusercontent.com/BruceMacD/Face-Swap-OpenCV/master/images/face_swapped.png)
 
 This is a basic face-swap implementation using OpenCV. Check out the code for a step-by-step explanation.
 
@@ -34,3 +34,4 @@ Head shot 2
 
 https://www.pexels.com/photo/man-wearing-black-zip-up-jacket-near-beach-smiling-at-the-photo-736716/
 
+![delauney triangulation](https://github.com/BruceMacD/Face-Swap-OpenCV/blob/master/images/delauney_landmarks.png)
