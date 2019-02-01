@@ -12,7 +12,8 @@ This is a basic face-swap implementation using OpenCV. Check out the code for a 
 
 ## Requirements
 * OpenCV v3.0+
-* dlib
+* numpy
+* dlib (for the landmark detection)
 * Python 3
 
 ## Sample

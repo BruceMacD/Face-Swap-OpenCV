@@ -6,7 +6,6 @@ Run all the separate components of face swapping in an easily understandable hig
 import sys
 import getopt
 import cv2
-import numpy as np
 from components.landmark_detection import detect_landmarks
 from components.convex_hull import find_convex_hull
 from components.delaunay_triangulation import find_delauney_triangulation
