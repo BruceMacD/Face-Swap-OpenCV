@@ -61,34 +61,22 @@ def main(argv):
 
     # divide the boundary of the face into smaller sections
     delauney_1 = find_delauney_triangulation(img_1, hull_1)
-    # delauney_2 = find_delauney_triangulation(img_2, hull_2)
+    delauney_2 = find_delauney_triangulation(img_2, hull_2)
 
     # warp the source triangles onto the target face
     # TODO: is this actually what is warped?
     img_1_warped = apply_affine_transformation(delauney_1, hull_1, hull_2, img_1, img_2)
-    # img_2_warped = apply_affine_transformation(delauney_1, hull_2, hull_1, img_2, img_1)
+    img_2_warped = apply_affine_transformation(delauney_2, hull_2, hull_1, img_2, img_1)
 
-    # Calculate Mask
-    hull8U = []
-    for i in range(0, len(hull_2)):
-        hull8U.append((hull_2[i][0], hull_2[i][1]))
+    swap_1 = swap_mask(hull_2, img_1_warped, img_2)
+    swap_2 = swap_mask(hull_1, img_2_warped, img_1)
 
-    mask = np.zeros(img_2.shape, dtype=img_2.dtype)
-
-    cv2.fillConvexPoly(mask, np.int32(hull8U), (255, 255, 255))
-
-    r = cv2.boundingRect(np.float32([hull_2]))
-
-    center = (r[0] + int(r[2] / 2), r[1] + int(r[3] / 2))
-
-    # Clone seamlessly.
-    output = cv2.seamlessClone(np.uint8(img_1_warped), img_2, mask, center, cv2.NORMAL_CLONE)
-
-    cv2.imshow("Face Swapped", output)
+    # show the results
+    cv2.imshow("Face Swap 1: ", swap_1)
+    cv2.imshow("Face Swap 2: ", swap_2)
     cv2.waitKey(0)
 
     cv2.destroyAllWindows()
-    # swap_mask(hull_1, img_1_warped, img_2)
 
 
 if __name__ == "__main__":

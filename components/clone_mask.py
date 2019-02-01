@@ -2,6 +2,7 @@
 
 import cv2
 import numpy as np
+from constants.constants import debug_mask_cloning
 
 
 def calculate_mask(hull, img):
@@ -24,12 +25,15 @@ def calculate_mask(hull, img):
 def clone_mask(warped_image, image_to_map, mask, center):
     output = cv2.seamlessClone(np.uint8(warped_image), image_to_map, mask, center, cv2.NORMAL_CLONE)
 
-    cv2.imshow("Face Swapped", output)
-    cv2.waitKey(0)
+    if debug_mask_cloning:
+        cv2.imshow("Face Swapped", output)
+        cv2.waitKey(0)
 
-    cv2.destroyAllWindows()
+        cv2.destroyAllWindows()
+
+    return output
 
 
 def swap_mask(hull, warped_image, image_to_map):
     mask, center = calculate_mask(hull, image_to_map)
-    clone_mask(warped_image, image_to_map, mask, center)
+    return clone_mask(warped_image, image_to_map, mask, center)
