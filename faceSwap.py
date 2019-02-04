@@ -46,11 +46,12 @@ def main(argv):
 
     # find the facial landmarks which return the key points of the face
     # localizes and labels areas such as eyebrows and nose
-    landmarks_1 = detect_landmarks(img_1)
-    landmarks_2 = detect_landmarks(img_2)
+    # we are using the first face found no matter what in this case, could be expanded for multiple faces here
+    landmarks_1 = detect_landmarks(img_1)[0]
+    landmarks_2 = detect_landmarks(img_2)[0]
 
-    # create a convex hull around the points, this will be used for transferring the points
-    # to another face
+    # create a convex hull around the points, this will be like a mask for transferring the points
+    # essentially this circles the face, swapping a convex hull looks more natural than a bounding box
     hull_1, hull_2 = find_convex_hull(landmarks_1, landmarks_2, img_1, img_2)
 
     # divide the boundary of the face into smaller sections

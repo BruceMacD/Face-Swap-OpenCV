@@ -35,12 +35,11 @@ def landmarks_to_numpy(landmarks):
         coords[i] = (landmarks.part(i).x, landmarks.part(i).y)
         coords[i] = (landmarks.part(i).x, landmarks.part(i).y)
 
-    # return the list of (x, y)-coordinates
+    # return the array of (x, y)-coordinates
     return coords
 
 
 def show_face_annotated(faces, landmarks, img):
-    # boxes_landmarks = zip(faces, landmarks)
 
     for face in faces:
         # draw box for face
@@ -58,17 +57,19 @@ def show_face_annotated(faces, landmarks, img):
 
 
 def detect_landmarks(img):
+    # this list will contain the facial landmark points for each face detected
     points = []
-    # second argument of 1 indicates the image will be upscaled once
+    # second argument of 1 indicates the image will be upscaled once, upscaling creates a bigger image so it is easier
+    # to detect the faces, can increase this number if there are troubles detecting faces
     # returns a bounding box around each face
     detected_faces = frontal_face_detector(img, 1)
 
     # now that we have the boxes containing the faces find the landmarks inside them
     for face in detected_faces:
-        # we are assuming that we will only find one face here
-        # in any case, we can only swap one face for our use so we will be taking the last one found
+        # use dlib to find the expected facial landmarks in the boxes around the detected faces
         landmarks = landmarks_predictor(img, face)
-        points = landmarks_to_numpy(landmarks)
+        # add the facial landmarks in a form we can use later without dlib
+        points.append(landmarks_to_numpy(landmarks))
 
     # show the bounding box
     if debug_landmark_detection:
