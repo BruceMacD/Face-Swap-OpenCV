@@ -7,7 +7,7 @@ These triangles allow us to morph the face to fit on another face
 import cv2
 from constants.constants import debug_delauney_triangulation
 
-
+# the lines drawn on the face when displaying the delauney triangulation
 line_color = (255, 255, 255)
 
 
@@ -23,11 +23,10 @@ def inside_rect_bounds(point, rectangle):
     return True
 
 
-# we are using the convex hull but this also works given the facial landmark points
+# we are using the convex hull points but this also works given the facial landmark points not within a convex hull
 def find_delauney_triangulation(img, points):
-    size_img = img.shape
     # find the space we want to partition, in this case the image size
-    rectangle = (0, 0, size_img[1], size_img[0])
+    rectangle = (0, 0, img.shape[1], img.shape[0])
 
     # create a subdivision for triangulation
     subdivision = cv2.Subdiv2D(rectangle)
@@ -37,7 +36,8 @@ def find_delauney_triangulation(img, points):
 
     delauney_triangulation = []
 
-    # create triangles from the points in the subdivision and display them
+    # create triangles from the points in the subdivision and display them if debugging
+    # OpenCV has delauney triangulations baked in to SibDiv2D objects with points using the triangle list function
     for triangle in subdivision.getTriangleList():
 
         # the lines between points that make up the triangle (the sides of the triangle)
@@ -49,7 +49,7 @@ def find_delauney_triangulation(img, points):
         if inside_rect_bounds(a, rectangle) and inside_rect_bounds(b, rectangle) and inside_rect_bounds(c, rectangle):
             point_indices = []
 
-            # find if there is a <x,y> point roughly approximate for each point of the triangle in our points
+            # find if there is a <x,y> point roughly approximate for each point of the triangle in our facial landmark points
             # if there is an <x,y> point corresponding add the index of the point for use
             for i in range(0, len(points)):
                 # compare a.x to point.x and a.y to point.y etc
@@ -60,8 +60,9 @@ def find_delauney_triangulation(img, points):
                 if abs(c[0] - points[i][0]) < 1.0 and abs(c[1] - points[i][1]) < 1.0:
                     point_indices.append(i)
 
-            # if each point in the triangle has a corresponding point store the indices to retrieve the <x,y> points
-            # we use these indices later to get the corresponding points from another hull/landmarks
+            # if each point in the triangle has a corresponding point in the landmarks store the indices to retrieve the <x,y> points
+            # we use these indices later to get the corresponding points from another hull/landmarks created using the
+            # same shape predictor
             if len(point_indices) == 3:
                 delauney_triangulation.append((point_indices[0], point_indices[1], point_indices[2]))
                 if debug_delauney_triangulation:

@@ -52,19 +52,19 @@ def main(argv):
 
     # create a convex hull around the points, this will be like a mask for transferring the points
     # essentially this circles the face, swapping a convex hull looks more natural than a bounding box
+    # we need to pass both sets of landmarks here because we map the convex hull from one face to another
     hull_1, hull_2 = find_convex_hull(landmarks_1, landmarks_2, img_1, img_2)
 
-    # divide the boundary of the face into smaller sections
+    # divide the boundary of the face into triangular sections to morph
     delauney_1 = find_delauney_triangulation(img_1, hull_1)
     delauney_2 = find_delauney_triangulation(img_2, hull_2)
 
     # warp the source triangles onto the target face
-    # TODO: is this actually what is warped?
-    img_1_warped = apply_affine_transformation(delauney_1, hull_1, hull_2, img_1, img_2)
-    img_2_warped = apply_affine_transformation(delauney_2, hull_2, hull_1, img_2, img_1)
+    img_1_face_to_img_2 = apply_affine_transformation(delauney_1, hull_1, hull_2, img_1, img_2)
+    img_2_face_to_img_1 = apply_affine_transformation(delauney_2, hull_2, hull_1, img_2, img_1)
 
-    swap_1 = swap_mask(hull_2, img_1_warped, img_2)
-    swap_2 = swap_mask(hull_1, img_2_warped, img_1)
+    swap_1 = swap_mask(hull_2, img_1_face_to_img_2, img_2)
+    swap_2 = swap_mask(hull_1, img_2_face_to_img_1, img_1)
 
     # show the results
     cv2.imshow("Face Swap 1: ", swap_1)
