@@ -4,10 +4,10 @@
 This is a basic face-swap implementation using OpenCV. Check out the code for a step-by-step explanation.
 
 ## Usage
-./faceSwap.py -i <data/input1.jpg> -i <data/input2.jpg> -o <data/output.jpg>
+./faceSwap.py -i <data/input1.jpg> -i <data/input2.jpg>
 
 ```
-./faceSwap.py -i data/headshot1.jpg -i data/headshot2.jpg -o data/swapped.jpg
+./faceSwap.py -i data/headshot1.jpg -i data/headshot2.jpg
 ```
 
 ## Requirements
