@@ -22,7 +22,6 @@ def get_affine_transform(src, src_tri, dst_tri, size):
     # Apply the Affine Transform just found to the src image
     dst = cv2.warpAffine(src, warp_mat, (size[0], size[1]), None, flags=cv2.INTER_LINEAR,
                          borderMode=cv2.BORDER_REFLECT_101)
-
     return dst
 
 
@@ -44,23 +43,26 @@ def morph_triangular_region(triangle_1, triangle_2, img_1, img_2):
     for coords in triangle_2:
         offset_triangle_2.append(((coords[0] - x_2), (coords[1] - y_2)))
 
-    # Get the mask by filling the triangle to mask pixels outside the desired area
+    # get the mask by filling the triangle to mask pixels outside the desired area
     mask = np.zeros((h_2, w_2, 3))
     cv2.fillConvexPoly(mask, np.int32(offset_triangle_2), POLY_FILL_COLOR)
 
-    # Apply warpImage to small rectangular patches
-    img_1_rect = img_1[y_1:y_1 + h_1, x_1:x_1 + w_1]
+    # get only the part of the image we are going to map within the bounding rectangle
+    img_1_within_bounds = img_1[y_1:y_1 + h_1, x_1:x_1 + w_1]
 
-    size = (w_2, h_2)
+    size_bounds_triangle_2 = (w_2, h_2)
 
-    img_2_rect = get_affine_transform(img_1_rect, offset_triangle_1, offset_triangle_2, size)
+    # apply the affine transform on img_1 based on the triangles
+    transformed_area = get_affine_transform(img_1_within_bounds, offset_triangle_1, offset_triangle_2,
+                                            size_bounds_triangle_2)
 
-    img_2_rect = img_2_rect * mask
+    # remove all parts of the transformed image outside the area we care about (triangle mask)
+    transformed_triangle = transformed_area * mask
 
-    # Copy triangular region of the rectangular patch to the output image
+    # slice the current area out of the in the image we are mapping the face to
     img_2[y_2:y_2 + h_2, x_2:x_2 + w_2] = img_2[y_2:y_2 + h_2, x_2:x_2 + w_2] * (POLY_FILL_COLOR - mask)
-
-    img_2[y_2:y_2 + h_2, x_2:x_2 + w_2] = img_2[y_2:y_2 + h_2, x_2:x_2 + w_2] + img_2_rect
+    # slice the transformed area back in its place
+    img_2[y_2:y_2 + h_2, x_2:x_2 + w_2] = img_2[y_2:y_2 + h_2, x_2:x_2 + w_2] + transformed_triangle
 
     return img_2
 
