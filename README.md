@@ -1,4 +1,4 @@
-# Face-Swap-OpenCV - Work In Progress
+# Face-Swap-OpenCV
 ![face swap sample](https://raw.githubusercontent.com/BruceMacD/Face-Swap-OpenCV/master/images/face_swapped.png)
 
 This is a basic face-swap implementation using OpenCV. Check out the code for a step-by-step explanation.
@@ -15,8 +15,6 @@ This is a basic face-swap implementation using OpenCV. Check out the code for a 
 * numpy
 * dlib (for the landmark detection)
 * Python 3
-
-## Sample
 
 ## Sources
 Based on the work of Satya Mallick
