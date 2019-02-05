@@ -10,6 +10,9 @@ import numpy as np
 from constants.constants import debug_affine_transformation
 
 
+POLY_FILL_COLOR = (1.0, 1.0, 1.0)
+
+
 # Apply affine transform calculated using srcTri and dstTri to src and
 # output an image of size.
 def get_affine_transform(src, src_tri, dst_tri, size):
@@ -41,13 +44,12 @@ def morph_triangular_region(triangle_1, triangle_2, img_1, img_2):
     for coords in triangle_2:
         offset_triangle_2.append(((coords[0] - x_2), (coords[1] - y_2)))
 
-    # Get mask by filling triangle
+    # Get the mask by filling the triangle to mask pixels outside the desired area
     mask = np.zeros((h_2, w_2, 3))
-    cv2.fillConvexPoly(mask, np.int32(offset_triangle_2), (1.0, 1.0, 1.0), 16, 0)
+    cv2.fillConvexPoly(mask, np.int32(offset_triangle_2), POLY_FILL_COLOR)
 
     # Apply warpImage to small rectangular patches
     img_1_rect = img_1[y_1:y_1 + h_1, x_1:x_1 + w_1]
-    # img2Rect = np.zeros((r2[3], r2[2]), dtype = img1Rect.dtype)
 
     size = (w_2, h_2)
 
@@ -56,7 +58,7 @@ def morph_triangular_region(triangle_1, triangle_2, img_1, img_2):
     img_2_rect = img_2_rect * mask
 
     # Copy triangular region of the rectangular patch to the output image
-    img_2[y_2:y_2 + h_2, x_2:x_2 + w_2] = img_2[y_2:y_2 + h_2, x_2:x_2 + w_2] * ((1.0, 1.0, 1.0) - mask)
+    img_2[y_2:y_2 + h_2, x_2:x_2 + w_2] = img_2[y_2:y_2 + h_2, x_2:x_2 + w_2] * (POLY_FILL_COLOR - mask)
 
     img_2[y_2:y_2 + h_2, x_2:x_2 + w_2] = img_2[y_2:y_2 + h_2, x_2:x_2 + w_2] + img_2_rect
 
