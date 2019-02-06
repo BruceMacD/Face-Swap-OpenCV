@@ -13,7 +13,6 @@ from components.affine_transformation import apply_affine_transformation
 from components.clone_mask import merge_mask_with_image
 
 EXPECTED_NUM_IN = 2
-DEBUG = True
 
 
 def exit_error():
