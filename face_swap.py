@@ -17,7 +17,7 @@ EXPECTED_NUM_IN = 2
 
 def exit_error():
     print('Error: unexpected arguments')
-    print('faceSwap.py -i <path/to/inputFile1> -i <path/to/inputFile2>')
+    print('face_swap.py -i <path/to/inputFile1> -i <path/to/inputFile2>')
     sys.exit()
 
 
