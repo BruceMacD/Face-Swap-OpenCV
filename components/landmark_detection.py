@@ -47,8 +47,9 @@ def show_face_annotated(faces, landmarks, img):
         cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 2)
 
         # draw circles for landmarks
-        for x, y in landmarks:
-            cv2.circle(img, (x, y), 1, (0, 0, 255), -1)
+        for landmark_set in landmarks:
+            for x, y in landmark_set:
+                cv2.circle(img, (x, y), 1, (0, 0, 255), -1)
 
         # show the output image with the face detections + facial landmarks
         cv2.imshow("Output", img)
