@@ -33,7 +33,6 @@ def landmarks_to_numpy(landmarks):
     # convert each landmark to (x, y)
     for i in range(0, landmarks.num_parts):
         coords[i] = (landmarks.part(i).x, landmarks.part(i).y)
-        coords[i] = (landmarks.part(i).x, landmarks.part(i).y)
 
     # return the array of (x, y)-coordinates
     return coords
